@@ -1,0 +1,254 @@
+{% extends "admin/base.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    :root {
+        --admin-ink-950: #0e1116;
+        --admin-ink-900: #141922;
+        --admin-ink-850: #1b2230;
+        --admin-ink-800: #212a38;
+        --admin-ink-700: #2e384a;
+        --admin-gold-500: #e2c173;
+        --admin-gold-400: #c9a24d;
+        --admin-slate-100: #f5f7fa;
+        --admin-slate-200: #d3d9e3;
+        --admin-slate-300: #a8b2c1;
+        --admin-line: rgba(201, 162, 77, 0.2);
+    }
+
+    body {
+        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+        color: var(--admin-slate-100);
+        background: radial-gradient(circle at 15% 20%, rgba(201, 162, 77, 0.08), transparent 40%),
+            linear-gradient(180deg, var(--admin-ink-950), #10151d 55%, var(--admin-ink-900));
+    }
+
+    #container {
+        background: transparent;
+    }
+
+    #header {
+        background: linear-gradient(120deg, var(--admin-ink-900), var(--admin-ink-850));
+        border-bottom: 1px solid var(--admin-line);
+        box-shadow: 0 10px 30px rgba(6, 9, 14, 0.4);
+        padding: 14px 30px;
+        position: relative;
+    }
+
+    #header::after {
+        content: "";
+        position: absolute;
+        left: 30px;
+        right: 30px;
+        bottom: 0;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(201, 162, 77, 0.1), rgba(201, 162, 77, 0.6), rgba(201, 162, 77, 0.1));
+    }
+
+    #branding h1, #branding h1 a:link, #branding h1 a:visited {
+        font-family: "Space Grotesk", "Segoe UI", sans-serif;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: var(--admin-gold-500);
+    }
+
+    #user-tools {
+        color: var(--admin-slate-300);
+    }
+
+    #user-tools a {
+        color: var(--admin-slate-200);
+        font-weight: 600;
+    }
+
+    #user-tools a:hover {
+        color: var(--admin-gold-500);
+    }
+
+    .breadcrumbs {
+        background: var(--admin-ink-900);
+        border: 1px solid var(--admin-line);
+        border-radius: 12px;
+        margin: 18px 30px 0;
+        padding: 12px 18px;
+        color: var(--admin-slate-300);
+        box-shadow: 0 10px 18px rgba(8, 10, 15, 0.3);
+    }
+
+    .breadcrumbs a {
+        color: var(--admin-gold-500);
+        font-weight: 600;
+    }
+
+    #content {
+        padding: 20px 30px 40px;
+    }
+
+    .module {
+        background: linear-gradient(160deg, var(--admin-ink-850), rgba(20, 26, 36, 0.94));
+        border-radius: 16px;
+        border: 1px solid rgba(201, 162, 77, 0.18);
+        box-shadow: 0 14px 30px rgba(4, 7, 12, 0.35);
+    }
+
+    .module h2, .module caption {
+        font-family: "Space Grotesk", "Segoe UI", sans-serif;
+        letter-spacing: 1px;
+        color: var(--admin-gold-500);
+        background: transparent;
+        border-bottom: 1px solid rgba(201, 162, 77, 0.2);
+    }
+
+    a {
+        color: var(--admin-gold-500);
+    }
+
+    a:hover {
+        color: #f2d992;
+    }
+
+    #changelist table, .module table {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    #changelist table thead th {
+        background: var(--admin-ink-800);
+        color: var(--admin-slate-200);
+        border-bottom: 1px solid var(--admin-line);
+        font-weight: 600;
+    }
+
+    #changelist table tbody tr {
+        background: rgba(23, 28, 38, 0.85);
+    }
+
+    #changelist table tbody tr:nth-child(even) {
+        background: rgba(29, 36, 48, 0.9);
+    }
+
+    #changelist table tbody td {
+        border-bottom: 1px solid rgba(201, 162, 77, 0.12);
+        color: var(--admin-slate-200);
+    }
+
+    .object-tools a, .submit-row input, .submit-row a, .button, input[type=submit], input[type=button], .button.default {
+        background: linear-gradient(180deg, #e4c77d, #b48b3a);
+        color: #121418;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 14px;
+        font-weight: 600;
+        box-shadow: 0 10px 18px rgba(178, 140, 58, 0.25);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .object-tools a:hover, .submit-row input:hover, .submit-row a:hover, .button:hover, input[type=submit]:hover, input[type=button]:hover, .button.default:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 22px rgba(178, 140, 58, 0.35);
+    }
+
+    .button.default, input[type=submit].default {
+        background: linear-gradient(180deg, #f0d38e, #c59a48);
+    }
+
+    .paginator, .actions {
+        background: var(--admin-ink-900);
+        border: 1px solid var(--admin-line);
+        border-radius: 12px;
+        padding: 12px;
+        color: var(--admin-slate-300);
+    }
+
+    #changelist-filter {
+        background: var(--admin-ink-900);
+        border: 1px solid var(--admin-line);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: 0 12px 24px rgba(4, 8, 12, 0.35);
+    }
+
+    #changelist-filter h2 {
+        color: var(--admin-gold-500);
+        font-family: "Space Grotesk", "Segoe UI", sans-serif;
+        letter-spacing: 1px;
+        border-bottom: 1px solid rgba(201, 162, 77, 0.2);
+        padding-bottom: 8px;
+    }
+
+    #changelist-filter a {
+        color: var(--admin-slate-200);
+    }
+
+    #changelist-filter a:hover {
+        color: var(--admin-gold-500);
+    }
+
+    #searchbar input[type=text] {
+        background: var(--admin-ink-900);
+        border: 1px solid var(--admin-line);
+        border-radius: 10px;
+        padding: 8px 12px;
+        color: var(--admin-slate-100);
+    }
+
+    #searchbar input[type=submit] {
+        margin-left: 8px;
+    }
+
+    .messagelist li {
+        border-radius: 12px;
+        padding: 12px 16px;
+        border: 1px solid var(--admin-line);
+        background: rgba(21, 27, 34, 0.9);
+        color: var(--admin-slate-100);
+    }
+
+    .messagelist li.success {
+        border-color: rgba(70, 160, 120, 0.5);
+    }
+
+    .fieldBox label, .aligned label {
+        color: var(--admin-slate-300);
+    }
+
+    .aligned .form-row {
+        border-bottom: 1px solid rgba(201, 162, 77, 0.12);
+    }
+
+    .form-row input, .form-row select, .form-row textarea {
+        background: var(--admin-ink-900);
+        border: 1px solid rgba(201, 162, 77, 0.2);
+        border-radius: 10px;
+        color: var(--admin-slate-100);
+    }
+
+    .inline-group {
+        border-radius: 12px;
+        border: 1px solid rgba(201, 162, 77, 0.2);
+        background: rgba(21, 27, 34, 0.9);
+    }
+
+    @media (max-width: 1024px) {
+        #content {
+            padding: 18px 20px 32px;
+        }
+
+        .breadcrumbs {
+            margin: 16px 20px 0;
+        }
+
+        #header {
+            padding: 12px 20px;
+        }
+    }
+</style>
+{% endblock %}

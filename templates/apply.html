@@ -1,0 +1,636 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for {{ job.title }} | {{ company_name }}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="{% static 'Gemini_Generated_Image_jcdhp1jcdhp1jcdh.webp' %}" type="image/webp">
+    <!-- Razorpay Checkput SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0D2416;
+            --bg-deep: #0D2416;
+            --bg-light: #1A3D26;
+            --bg-panel: #2E6645;
+            --bg-panel-strong: #3D7A55;
+            --accent-gold: #E8C34A;
+            --accent-ember: #E8C34A;
+            --accent-shadow: #E8C34A;
+            --accent-glow: #E8C34A;
+            --text-light: #ffffff;
+            --text-dim: #D4EDE0;
+            --line: rgba(232, 195, 74, 0.32);
+            --glass: rgba(46, 102, 69, 0.96);
+            --glass-line: rgba(232, 195, 74, 0.38);
+            --success: #3ddc84;
+        }
+        body {
+            background:
+                radial-gradient(circle at 12% 18%, rgba(26, 61, 38, 0.45), transparent 40%),
+                linear-gradient(180deg, #0D2416, #0D2416 100%);
+            color: var(--text-light);
+            font-family: "Space Grotesk", sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        h1, h2, h3, h4, h5 { font-family: "Source Serif 4", serif; }
+        .text-gold { color: var(--accent-gold); }
+        .bg-gold { background-color: var(--accent-gold); color: #1A2800; }
+        .btn-gold {
+            background: var(--accent-gold);
+            color: #1A2800;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 195, 74, 0.28);
+        }
+        .btn-gold:hover { background: var(--accent-gold); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(232, 195, 74, 0.38); color: #1A2800; }
+        .navbar { background-color: #1A3D26; border-bottom: 1px solid var(--line); }
+        .navbar-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.35rem; letter-spacing: 1px; color: var(--accent-gold) !important; text-transform: uppercase; }
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(232, 195, 74, 0.75);
+            box-shadow: 0 0 0 2px rgba(13, 36, 22, 0.85);
+        }
+        .header-chip {
+            border: 1px solid var(--line);
+            padding: 6px 14px;
+            border-radius: 999px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        .page-hero {
+            border-bottom: 1px solid rgba(232, 195, 74, 0.24);
+            background: linear-gradient(150deg, rgba(13, 36, 22, 0.94), rgba(26, 61, 38, 0.94));
+        }
+        .hero-title { font-size: clamp(2rem, 3.2vw, 2.9rem); }
+        .hero-title .job-title-gradient { font-size: clamp(2.4rem, 3.8vw, 3.4rem); display: inline-block; }
+        .hero-meta { color: var(--text-dim); border-left: 3px solid var(--accent-gold); padding-left: 12px; }
+        .job-title-gradient {
+            background: linear-gradient(90deg, #E8C34A, #E8C34A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .progress-track {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+        .progress-step {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(232, 195, 74, 0.3);
+            color: #D4EDE0;
+            font-size: 0.9rem;
+            background: rgba(26, 61, 38, 0.5);
+        }
+        .progress-step.active {
+            color: #1A2800;
+            border-color: rgba(232, 195, 74, 0.9);
+            background: var(--accent-gold);
+            font-weight: 700;
+            box-shadow: 0 0 16px rgba(232, 195, 74, 0.3);
+        }
+        .progress-step.muted {
+            opacity: 0.7;
+        }
+        .progress-step i { color: var(--accent-gold); }
+
+        .form-card {
+            background: linear-gradient(160deg, var(--bg-panel), rgba(46, 102, 69, 0.94));
+            color: var(--text-light);
+            border-radius: 16px;
+            padding: 44px;
+            border: 1px solid var(--glass-line);
+            border-left: 4px solid var(--accent-gold);
+            box-shadow: 0 26px 55px rgba(13, 36, 22, 0.58);
+            backdrop-filter: blur(12px);
+        }
+        .form-control, .form-select {
+            background-color: #3D7A55;
+            border: 1px solid rgba(232, 195, 74, 0.3);
+            color: #ffffff;
+            padding: 12px 15px; 
+            border-radius: 10px; 
+        }
+        .form-control:focus, .form-select:focus { 
+            background-color: #3D7A55; 
+            border-color: var(--accent-ember); 
+            box-shadow: 0 0 0 2px rgba(232, 195, 74, 0.3), 0 0 16px rgba(232, 195, 74, 0.15); 
+            color: #ffffff; 
+        }
+        .form-control[type=file] {
+            padding: 8px 12px;
+            height: 48px;
+        }
+        .form-control[type=file]::file-selector-button {
+            background: var(--accent-gold);
+            border: none;
+            color: #1A2800;
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin-right: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            height: 32px;
+        }
+        .form-control[type=file]::file-selector-button:hover {
+            background: var(--accent-gold);
+        }
+        .form-control::placeholder { color: #D4EDE0; }
+        .form-label { font-weight: 600; font-size: 0.95rem; color: var(--text-dim); }
+        .form-hint { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
+        .field-wrap {
+            position: relative;
+        }
+        .valid-icon {
+            position: absolute;
+            right: 12px;
+            top: 44px;
+            color: var(--success);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .field-wrap.is-valid .valid-icon {
+            opacity: 1;
+        }
+        .field-wrap.is-valid .form-control {
+            border-color: rgba(232, 195, 74, 0.65);
+        }
+        .payment-summary {
+            background: var(--bg-panel);
+            border: 1px solid rgba(232, 195, 74, 0.25);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .payment-summary strong { color: var(--accent-ember); }
+        .info-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(232, 195, 74, 0.3);
+            padding: 6px 12px;
+            border-radius: 999px;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+        .info-chip i { color: var(--accent-gold); }
+        .faq-tip {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+        .text-muted { color: #D4EDE0 !important; }
+        .faq-tip a { color: var(--accent-ember); text-decoration: none; }
+        .submit-btn {
+            font-size: 1.1rem;
+            padding: 14px 18px;
+            border-radius: 14px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 12px 30px rgba(232, 195, 74, 0.35);
+        }
+        .submit-btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            animation: shimmer 3.2s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-120%); }
+            45% { transform: translateX(220%); }
+            100% { transform: translateX(220%); }
+        }
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .badge-row .trust-pill {
+            background: var(--bg-panel);
+        }
+        .counter-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(232, 195, 74, 0.25);
+            border-radius: 14px;
+            padding: 14px 16px;
+            color: var(--text-dim);
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .stat-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(232, 195, 74, 0.25);
+            border-radius: 14px;
+            padding: 16px;
+            color: var(--text-dim);
+        }
+        .stat-card .stat-value {
+            color: var(--accent-ember);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .image-panel {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            height: auto;
+            min-height: 320px;
+            position: relative;
+            border: 1px solid rgba(232, 195, 74, 0.2);
+            background: var(--bg-panel);
+        }
+        .image-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.7;
+            object-position: center 20%;
+        }
+        .image-panel-inner {
+            position: relative;
+            width: 100%;
+            padding-top: 120%;
+            background: linear-gradient(135deg, rgba(61, 122, 85, 0.85), rgba(26, 61, 38, 0.95));
+        }
+        .image-panel-inner::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, rgba(232, 195, 74, 0.08) 25%, rgba(232, 195, 74, 0.22) 50%, rgba(232, 195, 74, 0.08) 75%);
+            background-size: 220% 100%;
+            animation: imageShimmer 1.6s ease-in-out infinite;
+            z-index: 1;
+        }
+        .image-panel-inner.is-loaded::before {
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            animation: none;
+            pointer-events: none;
+        }
+        @keyframes imageShimmer {
+            0% { background-position: 150% 0; }
+            100% { background-position: -70% 0; }
+        }
+        .image-panel::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 31, 26, 0.35) 0%, rgba(10, 31, 26, 0.88) 85%);
+        }
+        .trust-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .trust-pill {
+            border: 1px solid rgba(232, 195, 74, 0.25);
+            padding: 8px 14px;
+            border-radius: 999px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            background: var(--bg-panel);
+        }
+        .trust-pill i { color: var(--accent-gold); margin-right: 6px; }
+        
+        footer { margin-top: auto; background-color: var(--bg-deep); border-top: 1px solid rgba(232, 195, 74, 0.3); padding: 30px 0; }
+        .sticky-cta {
+            display: none;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 61, 38, 0.95);
+            border-top: 1px solid rgba(232, 195, 74, 0.35);
+            padding: 12px 16px;
+            z-index: 1050;
+        }
+        .sticky-cta .btn { width: 100%; }
+        @media (max-width: 991px) {
+            .layout-col { margin-bottom: 28px; }
+            .stat-grid { grid-template-columns: 1fr; }
+            .sticky-cta { display: block; }
+            .desktop-submit { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'logo.jpg' %}" alt="{{ company_name }} logo" class="brand-logo"> {{ company_name }}
+            </a>
+            <div class="d-flex text-light align-items-center ms-auto gap-3">
+                <span class="header-chip d-none d-md-inline"><i class="fa-solid fa-shield-check text-gold me-2"></i>Verified Hiring</span>
+                <a href="/" class="text-light text-decoration-none"><i class="fa-solid fa-arrow-left me-1"></i> Back to Home</a>
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-phone text-gold me-2"></i>
+                    <strong>{{ company_phone }}</strong>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Application Form Section -->
+    <section class="py-5 page-hero">
+        <div class="container mt-4">
+            <div class="progress-track">
+                <span class="progress-step active"><i class="fa-solid fa-pen"></i> Step 1: Apply</span>
+                <span class="progress-step muted"><i class="fa-solid fa-list-check"></i> Step 2: Review</span>
+                <span class="progress-step muted"><i class="fa-solid fa-circle-check"></i> Step 3: Confirm</span>
+            </div>
+            <div class="row align-items-stretch gx-5">
+
+                <!-- Left side form -->
+                <div class="col-lg-5 layout-col">
+                    <div class="mb-4">
+                        <div class="section-title"><span>Job Overview</span></div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="text-gold"><i class="fa-solid fa-shield-halved"></i></span>
+                            <div class="text-uppercase" style="letter-spacing: 2px; color: var(--text-dim); font-size: 0.85rem;">{{ company_name }}</div>
+                        </div>
+                        <h2 class="fw-bold mb-2 text-white hero-title">Apply Now for <span class="job-title-gradient">{{ job.title }}</span></h2>
+                        <div class="hero-meta mb-3"><i class="fa-solid fa-location-dot text-gold me-2"></i>Location: {{ job.location }}</div>
+                        <div class="info-chip mb-3"><i class="fa-solid fa-indian-rupee-sign"></i> ₹{{ job.salary }} / month</div>
+                        <div class="trust-row">
+                            <span class="trust-pill"><i class="fa-solid fa-badge-check"></i>Verified Roles</span>
+                            <span class="trust-pill"><i class="fa-solid fa-user-shield"></i>Secure Processing</span>
+                            <span class="trust-pill"><i class="fa-solid fa-clock"></i>24h Response</span>
+                        </div>
+                    </div>
+                    <div class="image-panel w-100 mb-4">
+                        <div class="image-panel-inner">
+                            <picture>
+                                <source srcset="{% static 'Gemini_Generated_Image_jcdhp1jcdhp1jcdh.webp' %}" type="image/webp">
+                                <img src="{% static 'Gemini_Generated_Image_jcdhp1jcdhp1jcdh.png' %}" alt="Security Guards" loading="eager" fetchpriority="high" decoding="async" width="900" height="1080" id="heroPhoto">
+                            </picture>
+                        </div>
+                        <div class="position-absolute bottom-0 start-0 w-100 p-4 text-light" style="background: linear-gradient(to top, rgba(0,0,0,0.92), transparent);">
+                            <h4 class="text-gold fw-bold mb-1"><i class="fa-solid fa-shield-halved me-2"></i>Verified Employer</h4>
+                            <p class="mb-0 small">Background-checked roles with clear onboarding.</p>
+                        </div>
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">1,200+</div>
+                            <div class="small">Workers placed this month</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">98%</div>
+                            <div class="small">Placement success rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">500+</div>
+                            <div class="small">Active client companies</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right side form -->
+                <div class="col-lg-7">
+
+                    {% if error %}
+                    <div class="alert alert-danger shadow-sm border-0" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ error }}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-card">
+                        <form id="apply-form" method="POST" action="{% url 'verify_payment' job.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- Hidden inputs for Razorpay data -->
+                            <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+                            <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+                            <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+                            
+                            <div class="row g-4">
+                                <div class="col-md-6 field-wrap">
+                                    <label class="form-label mb-1">Full Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="name" id="candidateName" placeholder="e.g. John Doe" required>
+                                    <i class="fa-solid fa-circle-check valid-icon"></i>
+                                </div>
+                                <div class="col-md-6 field-wrap">
+                                    <label class="form-label mb-1">Mobile Number <span class="text-danger">*</span></label>
+                                    <input type="tel" class="form-control" name="phone" id="candidatePhone" placeholder="+91 xxxxxxxxxx" required>
+                                    <i class="fa-solid fa-circle-check valid-icon"></i>
+                                </div>
+                                <div class="col-md-6 field-wrap">
+                                    <label class="form-label mb-1">Email Address <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" name="email" id="candidateEmail" placeholder="your@email.com" required>
+                                    <i class="fa-solid fa-circle-check valid-icon"></i>
+                                </div>
+                                <div class="col-md-6 field-wrap">
+                                    <label class="form-label mb-1"><i class="fa-solid fa-file-pdf text-gold me-1"></i> Upload Resume <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" name="resume" id="candidateResume" accept=".pdf,.doc,.docx" required>
+                                    <i class="fa-solid fa-circle-check valid-icon"></i>
+                                    <div class="form-hint mt-2">Accepted formats: PDF, DOC, DOCX (max 5MB).</div>
+                                </div>
+                                <div class="col-12 mt-4 field-wrap">
+                                    <label class="form-label mb-1">Experience Summary & Address <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" name="experience" id="candidateExperience" rows="4" placeholder="Briefly describe your experience and current address..." required></textarea>
+                                    <i class="fa-solid fa-circle-check valid-icon"></i>
+                                    <div class="form-hint mt-2">Tip: Add your total experience, certifications, and current location.</div>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <div class="payment-summary">
+                                        <div><i class="fa-solid fa-lock text-gold me-2"></i><strong>₹{{ application_fee }} Application Fee</strong> — Secure Payment via Razorpay/UPI</div>
+                                        <span class="info-chip"><i class="fa-solid fa-circle-info"></i>Why pay ₹{{ application_fee }}?</span>
+                                    </div>
+                                    <div class="faq-tip mt-2">The fee helps verify serious applicants and speeds up onboarding.</div>
+                                </div>
+                                <div class="col-12 mt-4 text-end desktop-submit">
+                                    <button type="button" id="pay-btn" class="btn btn-gold submit-btn w-100 shadow-sm"><i class="fa-solid fa-qrcode me-2"></i><i class="fa-solid fa-indian-rupee-sign me-1"></i> Pay {{ application_fee }} & Submit Application</button>
+                                </div>
+                                <div class="col-12 mt-4 badge-row">
+                                    <span class="trust-pill"><i class="fa-solid fa-lock"></i>100% Secure</span>
+                                    <span class="trust-pill"><i class="fa-solid fa-circle-check"></i>Verified Employer</span>
+                                    <span class="trust-pill"><i class="fa-solid fa-headset"></i>Support in 24h</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="sticky-cta">
+        <button type="button" class="btn btn-gold submit-btn" onclick="document.getElementById('pay-btn').click();">
+            <i class="fa-solid fa-indian-rupee-sign me-1"></i> Pay {{ application_fee }} & Submit Application
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-md-start">
+        <div class="container py-4">
+            <div class="text-center mb-4">
+                <hr class="w-10 mx-auto bg-gold" style="height: 2px; opacity: 1;">
+            </div>
+            <div class="d-flex flex-wrap justify-content-center gap-4 text-light small align-items-center">
+                <div><i class="fa-solid fa-phone text-gold me-2"></i> {{ company_phone }}</div>
+                <div><i class="fa-solid fa-location-dot text-gold me-2"></i> {{ company_address }}</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleValidState(input, isValid) {
+            var wrapper = input.closest('.field-wrap');
+            if (!wrapper) return;
+            if (isValid) {
+                wrapper.classList.add('is-valid');
+            } else {
+                wrapper.classList.remove('is-valid');
+            }
+        }
+
+        function validateEmail(value) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        }
+
+        function validatePhone(value) {
+            return value.replace(/\D/g, '').length >= 10;
+        }
+
+        document.getElementById('candidateName').addEventListener('input', function (e) {
+            toggleValidState(e.target, e.target.value.trim().length > 2);
+        });
+        document.getElementById('candidatePhone').addEventListener('input', function (e) {
+            toggleValidState(e.target, validatePhone(e.target.value));
+        });
+        document.getElementById('candidateEmail').addEventListener('input', function (e) {
+            toggleValidState(e.target, validateEmail(e.target.value));
+        });
+        document.getElementById('candidateResume').addEventListener('change', function (e) {
+            toggleValidState(e.target, e.target.files.length > 0);
+        });
+        document.getElementById('candidateExperience').addEventListener('input', function (e) {
+            toggleValidState(e.target, e.target.value.trim().length > 10);
+        });
+
+        (function () {
+            var heroPhoto = document.getElementById('heroPhoto');
+            if (!heroPhoto) return;
+
+            var imageWrap = heroPhoto.closest('.image-panel-inner');
+            if (!imageWrap) return;
+
+            var markLoaded = function () {
+                imageWrap.classList.add('is-loaded');
+            };
+
+            if (heroPhoto.complete) {
+                markLoaded();
+            } else {
+                heroPhoto.addEventListener('load', markLoaded, { once: true });
+            }
+        })();
+
+        document.getElementById('pay-btn').onclick = function(e){
+            e.preventDefault();
+            
+            // Basic form validation check
+            var form = document.getElementById('apply-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            var name = document.getElementById('candidateName').value;
+            var email = document.getElementById('candidateEmail').value;
+            var phone = document.getElementById('candidatePhone').value;
+
+            // Fetch generic order creation
+            var orderData = new FormData();
+            orderData.append('email', email);
+
+            fetch("{% url 'create_order' job.id %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: orderData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                var options = {
+                    "key": data.key_id,
+                    "amount": data.amount,
+                    "currency": data.currency,
+                    "name": "{{ company_name }}",
+                    "description": "Application Fee for {{ job.title }}",
+                    "order_id": data.order_id,
+                    "handler": function (response){
+                        // Inject Razorpay response into hidden inputs
+                        document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                        document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                        document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                        
+                        // Submit form securely to verify and save models
+                        document.getElementById('apply-form').submit();
+                    },
+                    "prefill": {
+                        "name": name,
+                        "email": email,
+                        "contact": phone
+                    },
+                    "theme": {
+                        "color": "#E8C34A"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response){
+                    alert("Payment Failed. Reason: " + response.error.description);
+                });
+                rzp1.open();
+            })
+            .catch(err => console.log(err));
+        }
+    </script>
+</body>
+</html>

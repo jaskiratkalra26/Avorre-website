@@ -1,0 +1,1070 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company_name }} | Security & Manpower Solutions</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #0A1F14;
+            --bg-hero: #0D2416;
+            --bg-surface: #0A1A10;
+            --bg-card: #1E4D30;
+            --bg-subtle: #112A1C;
+            --bg-input: #1A3D26;
+            --border-subtle: #3a7a55;
+            --accent-gold: #E8C34A;
+            --accent-ink: #0A1A10;
+            --text-light: #D4EDE0;
+            --text-dim: #8BC4A0;
+            --line: #3a7a55;
+        }
+        body {
+            background: var(--bg-page);
+            color: var(--text-light);
+            font-family: "Space Grotesk", sans-serif;
+            letter-spacing: 0.2px;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(232, 195, 74, 0.75), transparent);
+            animation: goldSweep 4.5s ease-in-out infinite;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        @keyframes goldSweep {
+            0%, 100% { opacity: 0.35; transform: translateX(-35%); }
+            50% { opacity: 0.9; transform: translateX(35%); }
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: "Source Serif 4", serif;
+        }
+        .text-gold { color: var(--accent-gold); }
+        .bg-gold { background-color: var(--accent-gold); color: var(--accent-ink); }
+        .text-light { color: var(--text-light) !important; }
+        .text-white { color: var(--text-light) !important; }
+        .text-muted { color: var(--text-dim) !important; }
+        .btn-gold {
+            background: var(--accent-gold);
+            color: var(--accent-ink);
+            font-weight: 700;
+            border: 1px solid var(--accent-gold);
+            transition: 0.3s ease;
+            box-shadow: 0 8px 22px rgba(232, 195, 74, 0.25);
+        }
+        .btn-gold:hover {
+            background: var(--accent-gold);
+            color: var(--accent-ink);
+        }
+        .btn-outline-gold {
+            border: 2px solid var(--text-light);
+            color: var(--text-light);
+            transition: 0.3s;
+        }
+        .btn-outline-gold:hover {
+            background-color: transparent;
+            color: var(--text-light);
+        }
+        .btn-apply {
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold);
+            background: transparent;
+            font-weight: 700;
+        }
+        .btn-apply:hover {
+            background: var(--accent-gold);
+            color: var(--accent-ink);
+        }
+        .navbar {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(6px);
+        }
+        .navbar.scrolled {
+            box-shadow: 0 10px 25px rgba(10, 26, 16, 0.45);
+            border-bottom: 1px solid var(--accent-gold);
+        }
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: 1.6px;
+            color: var(--accent-gold) !important;
+            text-transform: uppercase;
+        }
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--accent-gold);
+            box-shadow: 0 0 0 2px rgba(10, 26, 16, 0.85);
+        }
+        .nav-link {
+            color: var(--text-dim) !important;
+            font-weight: 600;
+            position: relative;
+        }
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), transparent);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { color: var(--accent-gold) !important; }
+                .nav-phone {
+                    color: var(--accent-gold);
+                    text-decoration: none;
+                    font-weight: 700;
+                }
+        .nav-chip {
+            border: 1px solid var(--line);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+        .nav-bell {
+            position: relative;
+        }
+        .bell-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid var(--line);
+            background: var(--bg-card);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            position: relative;
+            cursor: pointer;
+        }
+        .bell-btn svg {
+            width: 15px;
+            height: 15px;
+            fill: var(--accent-gold);
+        }
+        .bell-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            color: #1a2800;
+            font-size: 9px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-surface);
+        }
+        .bell-badge.is-hidden {
+            display: none;
+        }
+        .bell-popup {
+            position: absolute;
+            top: 44px;
+            right: 0;
+            width: 260px;
+            background: #112A1C;
+            border: 1px solid #2a5a3a;
+            border-radius: 10px;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .bell-popup.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .bell-header {
+            background: #0D2416;
+            border-bottom: 1px solid #1E4D30;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+        }
+        .bell-close {
+            border: none;
+            background: none;
+            color: #4a6e58;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        .bell-row {
+            padding: 9px 14px;
+            border-bottom: 1px solid rgba(26, 61, 38, 0.53);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .bell-row:hover {
+            background: #1a3d28;
+        }
+        .bell-title {
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .bell-date {
+            color: #4a6e58;
+            font-size: 10px;
+        }
+        .bell-footer {
+            background: #0D2416;
+            border-top: 1px solid #1E4D30;
+            padding: 9px 14px;
+            text-align: center;
+        }
+        .bell-footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background:
+                radial-gradient(circle at 15% 20%, rgba(232, 195, 74, 0.1), transparent 46%),
+                linear-gradient(180deg, rgba(13, 36, 22, 0.93), rgba(13, 36, 22, 0.97)),
+                url('https://images.unsplash.com/photo-1542188243-15949d21396a?auto=format&fit=crop&q=80&w=1920') center/cover;
+            padding: 80px 0 96px;
+            border-bottom: 1px solid var(--line);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(13, 36, 22, 0.22), rgba(13, 36, 22, 0.62));
+            z-index: 0;
+        }
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(135deg, rgba(212, 237, 224, 0.03) 0, rgba(212, 237, 224, 0.03) 1px, transparent 1px, transparent 18px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+        .hero-kicker {
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+        .hero-title {
+            font-size: clamp(2.4rem, 3.6vw, 3.8rem);
+            line-height: 1.1;
+        }
+        .hero-card {
+            background: #1E4D30;
+            border: 1px solid var(--line);
+            border-left: 3px solid var(--accent-gold);
+            border-radius: 16px;
+            padding: 26px 28px;
+            box-shadow: 0 18px 34px rgba(7, 16, 10, 0.62);
+            position: relative;
+            z-index: 1;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .hero-metric {
+            border-left: 2px solid var(--accent-gold);
+            padding-left: 14px;
+        }
+        .hero-metric h6 {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            margin: 0;
+        }
+        .hero-metric p {
+            margin: 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        
+        /* Services */
+        .section-title {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        .section-title span {
+            border: 1px solid var(--line);
+            padding: 6px 14px;
+            border-radius: 999px;
+            display: inline-flex;
+        }
+        .service-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--line);
+            border-top: 3px solid var(--accent-gold);
+            border-radius: 14px;
+            padding: 28px 22px;
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card:hover { 
+            transform: translateY(-10px);
+            box-shadow: 0 16px 32px rgba(7, 16, 10, 0.5);
+            border-color: var(--accent-gold);
+        }
+                .service-bullets {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+                .service-bullet {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 10px;
+                    color: var(--text-light);
+                    font-size: 0.9rem;
+                }
+                .service-bullet i {
+                    color: var(--accent-gold);
+                    margin-top: 3px;
+                }
+        .service-card::after {
+            content: "";
+            position: absolute;
+            right: -40px;
+            top: -40px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.25), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .service-card:hover::after {
+            opacity: 1;
+        }
+        .service-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(232, 195, 74, 0.16);
+            color: var(--accent-ink);
+        }
+        
+        .section-slab {
+            background: var(--bg-subtle);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+        .badge-soft {
+            background: rgba(232, 195, 74, 0.16);
+            color: var(--accent-ink);
+            border: 1px solid var(--accent-gold);
+        }
+        .stat-card {
+            background: var(--bg-hero);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 18px 20px;
+        }
+        .stat-card h3 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        .stat-card span {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        .accent-line {
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), transparent);
+            width: 120px;
+        }
+        .trust-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 26px;
+        }
+        .trust-pill {
+            border: 1px solid var(--line);
+            padding: 8px 16px;
+            border-radius: 999px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            background: rgba(10, 31, 16, 0.45);
+        }
+        .trust-pill i {
+            color: var(--accent-gold);
+            margin-right: 6px;
+        }
+        
+        /* Footer */
+        footer { 
+            background-color: var(--bg-surface); 
+            border-top: 1px solid var(--line); 
+            padding: 50px 0; 
+        }
+        .footer-card {
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 22px 24px;
+            box-shadow: 0 16px 30px rgba(10, 31, 26, 0.35);
+        }
+        .footer-card-quick {
+            background: var(--bg-hero);
+        }
+        .whatsapp-pulse {
+            position: relative;
+            box-shadow: 0 0 0 rgba(232, 195, 74, 0.35);
+            animation: waPulse 2.6s infinite;
+        }
+        @keyframes waPulse {
+            0% { box-shadow: 0 0 0 0 rgba(232, 195, 74, 0.35); }
+            70% { box-shadow: 0 0 0 12px rgba(232, 195, 74, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(232, 195, 74, 0); }
+        }
+        .response-time {
+            color: var(--accent-gold);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+        .social-links {
+            display: flex;
+            gap: 14px;
+            margin-top: 16px;
+        }
+        .social-links a {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            transition: color 0.2s ease;
+        }
+        .social-links a:hover { color: var(--accent-gold); }
+        .back-to-top {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            background: rgba(10, 26, 16, 0.95);
+            border: 1px solid var(--line);
+            color: var(--accent-gold);
+            padding: 10px 14px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .copyright {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 18px;
+        }
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        .footer-link:hover {
+            color: var(--accent-gold);
+        }
+        .divider-soft {
+            height: 1px;
+            background: var(--line);
+            margin: 20px 0;
+        }
+        .about-section {
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+        .about-block {
+            padding: 56px 0;
+        }
+        .about-block.intro { background: var(--bg-hero); }
+        .about-block.goals { background: var(--bg-subtle); }
+        .about-block.pillars { background: var(--bg-page); }
+        .about-block.quote { background: var(--bg-subtle); }
+        .about-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .about-label.dim { color: var(--text-dim); }
+        .about-label.gold { color: var(--accent-gold); }
+        .about-underline {
+            width: 40px;
+            height: 2px;
+            background: var(--accent-gold);
+            margin-top: 12px;
+        }
+        .about-card {
+            background: var(--bg-card);
+            border-top: 3px solid var(--accent-gold);
+            border-radius: 10px;
+            padding: 22px 24px;
+            height: 100%;
+            box-shadow: 0 14px 28px rgba(7, 16, 10, 0.4);
+        }
+        .about-goals {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .goal-item {
+            display: flex;
+            gap: 10px;
+            color: var(--text-light);
+        }
+        .goal-dot {
+            width: 10px;
+            height: 10px;
+            margin-top: 6px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            flex: 0 0 10px;
+        }
+        .pillar-card {
+            border-left: 3px solid var(--accent-gold);
+            border-radius: 0 10px 10px 0;
+            padding: 22px 24px;
+            height: 100%;
+            box-shadow: 0 14px 28px rgba(7, 16, 10, 0.4);
+        }
+        .pillar-card.left { background: var(--bg-card); }
+        .pillar-card.right { background: #2a1e00; }
+        .about-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-dim);
+            background: var(--bg-hero);
+        }
+        .about-pill.gold {
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            background: #1a1200;
+        }
+        .coming-soon {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid #E8C34A40;
+            color: var(--accent-gold);
+            background: #1a1200;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            margin-left: 10px;
+        }
+        .quote-band {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+        .quote-line {
+            width: 4px;
+            background: var(--accent-gold);
+            flex: 0 0 4px;
+            align-self: stretch;
+        }
+        .cta-strip {
+            background: var(--bg-page);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 24px 0;
+        }
+        .btn-outline-gold-accent {
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold);
+            background: transparent;
+            font-weight: 700;
+        }
+        .btn-outline-gold-accent:hover {
+            background: transparent;
+            color: var(--accent-gold);
+        }
+        .contact-left {
+            border-top: 3px solid var(--accent-gold);
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: reveal 0.8s ease forwards;
+        }
+        .reveal.delay-1 { animation-delay: 0.12s; }
+        .reveal.delay-2 { animation-delay: 0.24s; }
+        .reveal.delay-3 { animation-delay: 0.36s; }
+        @keyframes reveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 991px) {
+            .about-goals {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 640px) {
+            .about-goals {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body id="top">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'logo.jpg' %}" alt="{{ company_name }} logo" class="brand-logo"> {{ company_name }}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/jobs">Job Listings</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="nav-chip"><i class="fa-solid fa-location-dot text-gold me-2"></i>{{ company_address }}</span>
+                    <div class="d-flex text-light align-items-center">
+                        <i class="fa-solid fa-phone text-gold me-2"></i>
+                        <a class="nav-phone" href="tel:{{ company_phone|cut:' ' }}">{{ company_phone }}</a>
+                    </div>
+                    <div class="nav-bell">
+                        <button class="bell-btn" type="button" aria-label="Notifications">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.8V3a1.5 1.5 0 0 0-3 0v1.2A7 7 0 0 0 5 11v5l-1.5 1.5v.5h17v-.5L19 16Z"/>
+                            </svg>
+                            <span class="bell-badge">{{ recent_jobs|length }}</span>
+                        </button>
+                        <div class="bell-popup" aria-hidden="true">
+                            <div class="bell-header">
+                                <span>RECENT OPENINGS</span>
+                                <button class="bell-close" type="button" aria-label="Close notifications">×</button>
+                            </div>
+                            {% if recent_jobs %}
+                                {% for recent in recent_jobs %}
+                                <a class="bell-row" href="/jobs">
+                                    <span class="bell-title">{{ recent.title }}</span>
+                                    <span class="bell-date">{{ recent.created_at|timesince }} ago</span>
+                                </a>
+                                {% endfor %}
+                            {% else %}
+                                <div class="bell-row" style="cursor: default;">
+                                    <span class="bell-title">No openings yet</span>
+                                    <span class="bell-date">—</span>
+                                </div>
+                            {% endif %}
+                            <div class="bell-footer">
+                                <a href="/jobs">View all openings →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center text-lg-start position-relative">
+        <div class="container position-relative z-1">
+            <div class="row align-items-center">
+                <div class="col-lg-7 py-5 reveal">
+                    <div class="hero-kicker mb-3">Trusted Since 2012</div>
+                    <h1 class="hero-title fw-bold mb-4" style="color: var(--text-light);">Premium <span class="text-gold">Security</span> and Workforce<br>Solutions for Modern Businesses</h1>
+                    <p class="lead text-light mb-4 fs-5" style="opacity: 0.92;">From corporate campuses to industrial facilities, we deliver trained teams, rapid deployment, and measurable protection standards.</p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+                        <a href="/jobs" class="btn btn-gold btn-lg px-4 py-3 rounded-pill fw-bold">Explore Open Roles <i class="fa-solid fa-arrow-right ms-2"></i></a>
+                        <a href="#contact" class="btn btn-outline-gold btn-lg px-4 py-3 rounded-pill fw-bold">Request a Quote <i class="fa-solid fa-comment-dots ms-2"></i></a>
+                    </div>
+                    <div class="trust-row justify-content-center justify-content-lg-start">
+                        <span class="trust-pill"><i class="fa-solid fa-badge-check"></i> ISO-aligned SOPs</span>
+                        <span class="trust-pill"><i class="fa-solid fa-shield"></i> 24/7 Command Center</span>
+                        <span class="trust-pill"><i class="fa-solid fa-user-tie"></i> Verified Workforce</span>
+                    </div>
+                </div>
+                <div class="col-lg-5 py-5 reveal delay-1">
+                    <div class="hero-card">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div>
+                                <div class="badge badge-soft rounded-pill px-3 py-2">Service Excellence</div>
+                            </div>
+                            <span class="text-gold"><i class="fa-solid fa-award"></i></span>
+                        </div>
+                        <p class="mb-4" style="color: var(--text-dim);">Dedicated supervisors, detailed SOPs, and compliance-ready reporting with 24/7 support.</p>
+                        <div class="d-flex flex-column gap-3">
+                            <div class="hero-metric">
+                                <h6>24/7 Rapid Deployment</h6>
+                                <p>Emergency coverage in under 6 hours.</p>
+                            </div>
+                            <div class="hero-metric">
+                                <h6>Verified Staff Database</h6>
+                                <p>Background checks and performance tracking.</p>
+                            </div>
+                            <div class="hero-metric">
+                                <h6>Pan-India Coverage</h6>
+                                <p>Serving corporate and industrial hubs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5 section-slab">
+        <div class="container">
+            <div class="text-center mb-4 reveal">
+                <div class="section-title">What We Deliver</div>
+                <h2 class="fw-bold text-gold">Specialized Services Built for Scale</h2>
+                <div class="accent-line mx-auto mt-3"></div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="service-card text-center text-md-start h-100 reveal delay-1">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="service-icon me-3"><i class="fa-solid fa-shield-virus"></i></span>
+                            <h5 class="mb-0 text-gold">Security Services</h5>
+                        </div>
+                        <div class="service-bullets">
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Guards, supervisors, bouncers, and event security with on-site leadership.</div>
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Threat assessment, access control, emergency response</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card text-center text-md-start h-100 reveal delay-2">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="service-icon me-3"><i class="fa-solid fa-helmet-safety"></i></span>
+                            <h5 class="mb-0 text-gold">Manpower Supply</h5>
+                        </div>
+                        <div class="service-bullets">
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Reliable workforce for logistics, manufacturing, and infrastructure projects.</div>
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Skilled, semi-skilled, and on-demand staffing</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card text-center text-md-start h-100 reveal delay-3">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="service-icon me-3"><i class="fa-solid fa-building-user"></i></span>
+                            <h5 class="mb-0 text-gold">Facility Management</h5>
+                        </div>
+                        <div class="service-bullets">
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Housekeeping, maintenance, and hygiene services with compliance reporting.</div>
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Daily audits and SLA-driven delivery</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4 mt-4">
+                <div class="col-md-4">
+                    <div class="stat-card reveal">
+                        <h3 class="text-gold" data-count="2500" data-suffix="+">0</h3>
+                        <span>Trained personnel deployed</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card reveal delay-1">
+                        <h3 class="text-gold" data-count="120" data-suffix="+">0</h3>
+                        <span>Client sites under protection</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card reveal delay-2">
+                        <h3 class="text-gold" data-count="10" data-suffix="+">0</h3>
+                        <span>Years of operational excellence</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about-section">
+        <div class="about-block intro">
+            <div class="container">
+                <div class="row align-items-start g-4">
+                    <div class="col-lg-6 reveal">
+                        <div class="about-label gold">WHO WE ARE</div>
+                        <h2 class="fw-bold mt-2">About <span class="text-gold">Avorre Group</span> Private Limited</h2>
+                        <div class="about-underline"></div>
+                        <p class="mt-3" style="color: var(--text-light);">A company built with a vision to create meaningful opportunities, deliver reliable services, and grow with integrity in every step we take. We bridge the gap between businesses and skilled manpower while continuously exploring new sectors for growth.</p>
+                    </div>
+                    <div class="col-lg-6 reveal delay-1">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="about-card">
+                                    <h5 class="text-gold">Our Mission</h5>
+                                    <p class="mb-0" style="color: var(--text-light);">Empower businesses with dependable manpower and support services that enhance productivity and efficiency, while expanding into high-potential sectors.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="about-card">
+                                    <h5 class="text-gold">Our Vision</h5>
+                                    <p class="mb-0" style="color: var(--text-light);">To become a reliable and recognized company delivering value across multiple sectors — from manpower services to consumer products like tea — creating growth, opportunities, and trust.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-block goals">
+            <div class="container">
+                <div class="text-center reveal">
+                    <div class="about-label dim">WHAT DRIVES US</div>
+                    <h2 class="text-gold fw-bold mt-2">Our Goals</h2>
+                </div>
+                <div class="about-goals">
+                    <div class="goal-item"><span class="goal-dot"></span><span>Trusted name in manpower and service solutions</span></div>
+                    <div class="goal-item"><span class="goal-dot"></span><span>Strong network of skilled, trained professionals</span></div>
+                    <div class="goal-item"><span class="goal-dot"></span><span>High standards of quality, compliance, and reliability</span></div>
+                    <div class="goal-item"><span class="goal-dot"></span><span>Diversify into the chai (tea) product segment</span></div>
+                    <div class="goal-item"><span class="goal-dot"></span><span>Consistent growth and long-term sustainability</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-block pillars">
+            <div class="container">
+                <div class="text-center reveal">
+                    <div class="about-label dim">WHAT WE DO</div>
+                    <h2 class="text-gold fw-bold mt-2">Two pillars of growth</h2>
+                </div>
+                <div class="row g-4 mt-3">
+                    <div class="col-lg-6 reveal delay-1">
+                        <div class="pillar-card left">
+                            <h5 class="text-gold">Workforce Solutions</h5>
+                            <p style="color: var(--text-light);">Connecting companies with the right talent. Skilled, semi-skilled, and on-demand staffing across security, facility management, and logistics.</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="about-pill">Security Services</span>
+                                <span class="about-pill">Manpower Supply</span>
+                                <span class="about-pill">Facility Mgmt</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 reveal delay-2">
+                        <div class="pillar-card right">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <h5 class="text-gold mb-0">Chai Products</h5>
+                                <span class="coming-soon">Coming Soon</span>
+                            </div>
+                            <p class="mt-2" style="color: var(--text-light);">Expanding into premium and affordable chai products — sourcing quality tea leaves, building our own brand, and establishing distribution channels.</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="about-pill gold">Premium Chai</span>
+                                <span class="about-pill gold">Packaged Tea</span>
+                                <span class="about-pill gold">Bulk Supply</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-block quote">
+            <div class="container">
+                <div class="quote-band reveal">
+                    <div class="quote-line"></div>
+                    <div>
+                        <p class="mb-2" style="color: var(--text-light); font-style: italic; font-size: 15px;">"We believe in evolving with time, exploring new opportunities, and building a future that blends service excellence with product innovation."</p>
+                        <div style="color: var(--text-dim);">— Avorre Group Private Limited</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-strip">
+        <div class="container">
+            <div class="row align-items-center g-3">
+                <div class="col-lg-8 text-center text-lg-start">
+                    <h5 class="text-white mb-1" style="font-size: 16px;">Join the Avorre workforce</h5>
+                    <div style="color: var(--text-dim);">Explore current openings in security, manpower, and facility management roles across India.</div>
+                </div>
+                <div class="col-lg-4 d-flex flex-column flex-sm-row gap-2 justify-content-lg-end">
+                    <a href="/jobs" class="btn btn-gold rounded-pill px-4">View Job Openings →</a>
+                    <a href="#contact" class="btn btn-outline-gold-accent rounded-pill px-4">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <footer id="contact" class="text-center text-md-start">
+        <div class="container py-4">
+            <div class="text-center mb-4 reveal">
+                <div class="section-title">Contact</div>
+                <h4 class="text-gold fw-bold">Let's Build Your Workforce</h4>
+                <div class="accent-line mx-auto mt-3"></div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="footer-card contact-left reveal">
+                        <div class="d-flex flex-wrap gap-4 text-light small align-items-center">
+                            <div><i class="fa-solid fa-phone text-gold me-2"></i> {{ company_phone }}</div>
+                            <div><i class="fa-solid fa-location-dot text-gold me-2"></i> {{ company_address }}</div>
+                        </div>
+                        <div class="divider-soft"></div>
+                        <p class="mb-0" style="color: var(--text-dim);">Share your staffing or security requirements and we will respond with a custom plan within 24 hours.</p>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="footer-card footer-card-quick reveal delay-1">
+                        <h5 class="text-gold mb-3">Quick Connect</h5>
+                        <a href="https://wa.me/{{ company_phone|cut:' ' }}?text=Hello,%20I%20am%20interested%20in%20your%20job%20services" target="_blank" class="btn btn-sm rounded-pill text-decoration-none mb-3 whatsapp-pulse" style="background: #1E4D30; border: 1px solid var(--line); color: var(--text-light);">
+                            <i class="fa-brands fa-whatsapp me-2"></i> Chat on WhatsApp
+                        </a>
+                        <div class="response-time">Avg. response: under 2 hours</div>
+                        <div class="small" style="color: var(--text-dim);">Business hours: Mon-Sat, 9:00 AM - 7:00 PM</div>
+                        <div class="social-links">
+                            <a href="https://wa.me/{{ company_phone|cut:' ' }}" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright text-center">© {{ current_year }} {{ company_name }}. All rights reserved.</div>
+        </div>
+    </footer>
+    <a href="#top" class="back-to-top"><i class="fa-solid fa-arrow-up"></i> Back to Top</a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        const bell = document.querySelector('.nav-bell');
+        if (bell) {
+            const bellBtn = bell.querySelector('.bell-btn');
+            const bellPopup = bell.querySelector('.bell-popup');
+            const bellBadge = bell.querySelector('.bell-badge');
+            const bellClose = bell.querySelector('.bell-close');
+            const bellKey = 'avorreBellSeen';
+
+            if (sessionStorage.getItem(bellKey) === '1') {
+                bellBadge.classList.add('is-hidden');
+            }
+
+            const openBell = () => {
+                bellPopup.classList.add('open');
+                bellPopup.setAttribute('aria-hidden', 'false');
+                bellBadge.classList.add('is-hidden');
+                sessionStorage.setItem(bellKey, '1');
+            };
+
+            const closeBell = () => {
+                bellPopup.classList.remove('open');
+                bellPopup.setAttribute('aria-hidden', 'true');
+            };
+
+            bellBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (bellPopup.classList.contains('open')) {
+                    closeBell();
+                } else {
+                    openBell();
+                }
+            });
+
+            bellPopup.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+
+            bellClose.addEventListener('click', (event) => {
+                event.stopPropagation();
+                closeBell();
+            });
+
+            document.addEventListener('click', () => {
+                closeBell();
+            });
+        }
+
+        const counters = document.querySelectorAll('[data-count]');
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target;
+                const target = parseInt(el.dataset.count, 10);
+                const suffix = el.dataset.suffix || '';
+                let current = 0;
+                const step = Math.max(1, Math.floor(target / 60));
+                const tick = () => {
+                    current += step;
+                    if (current >= target) {
+                        el.textContent = `${target.toLocaleString()}${suffix}`;
+                        return;
+                    }
+                    el.textContent = `${current.toLocaleString()}${suffix}`;
+                    requestAnimationFrame(tick);
+                };
+                tick();
+                countObserver.unobserve(el);
+            });
+        }, { threshold: 0.6 });
+
+        counters.forEach(counter => countObserver.observe(counter));
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+<style>
+    :root {
+        --admin-slate-900: #0f1419;
+        --admin-slate-800: #151b22;
+        --admin-slate-700: #202734;
+        --admin-gold-600: #c9a24d;
+        --admin-gold-500: #e2c173;
+        --admin-text-100: #f6f7f9;
+        --admin-text-300: #c4ccd6;
+        --admin-line: rgba(201, 162, 77, 0.2);
+    }
+
+    .admin-metrics {
+        background: radial-gradient(circle at top left, rgba(201, 162, 77, 0.15), transparent 55%),
+            linear-gradient(140deg, var(--admin-slate-800), var(--admin-slate-900));
+        border: 1px solid var(--admin-line);
+        border-radius: 16px;
+        padding: 22px 26px;
+        margin-bottom: 22px;
+        color: var(--admin-text-100);
+        box-shadow: 0 18px 40px rgba(5, 7, 10, 0.35);
+    }
+
+    .admin-metrics-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .admin-metrics-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--admin-gold-500);
+        margin: 0;
+    }
+
+    .admin-metrics-subtitle {
+        margin: 0;
+        color: var(--admin-text-300);
+        font-size: 0.9rem;
+    }
+
+    .admin-metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+    }
+
+    .admin-metric-card {
+        background: linear-gradient(160deg, var(--admin-slate-700), rgba(21, 27, 34, 0.85));
+        border: 1px solid rgba(201, 162, 77, 0.22);
+        border-radius: 12px;
+        padding: 16px 18px;
+    }
+
+    .admin-metric-label {
+        margin: 0 0 10px 0;
+        font-size: 0.85rem;
+        color: var(--admin-text-300);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .admin-metric-value {
+        margin: 0;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--admin-text-100);
+    }
+
+    .admin-metric-accent {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--admin-gold-600);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .admin-metric-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--admin-gold-600);
+        box-shadow: 0 0 12px rgba(201, 162, 77, 0.8);
+    }
+</style>
+
+<section class="admin-metrics">
+    <div class="admin-metrics-header">
+        <div>
+            <p class="admin-metrics-title">Operations Snapshot</p>
+            <p class="admin-metrics-subtitle">Live totals across your hiring workflow.</p>
+        </div>
+        <div class="admin-metric-accent">
+            <span class="admin-metric-dot"></span>
+            Updated just now
+        </div>
+    </div>
+    <div class="admin-metrics-grid">
+        <div class="admin-metric-card">
+            <p class="admin-metric-label">Total Jobs</p>
+            <p class="admin-metric-value">{{ metrics.total_jobs }}</p>
+        </div>
+        <div class="admin-metric-card">
+            <p class="admin-metric-label">Total Applications</p>
+            <p class="admin-metric-value">{{ metrics.total_applications }}</p>
+        </div>
+        <div class="admin-metric-card">
+            <p class="admin-metric-label">Successful Payments</p>
+            <p class="admin-metric-value">{{ metrics.successful_payments }}</p>
+        </div>
+    </div>
+</section>
+
+{{ block.super }}
+{% endblock %}

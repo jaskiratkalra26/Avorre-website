@@ -1,0 +1,724 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Job Openings | {{ company_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #0A1F14;
+            --bg-hero: #0D2416;
+            --bg-surface: #0A1A10;
+            --bg-card: #1E4D30;
+            --bg-input: #1A3D26;
+            --border-subtle: #3a7a55;
+            --accent-gold: #E8C34A;
+            --accent-ink: #0A1A10;
+            --text-light: #D4EDE0;
+            --text-dim: #8BC4A0;
+            --line: #3a7a55;
+        }
+        body {
+            background: var(--bg-page);
+            color: var(--text-light);
+            font-family: "Space Grotesk", sans-serif;
+            letter-spacing: 0.2px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: "Source Serif 4", serif;
+        }
+        .text-gold { color: var(--accent-gold); }
+        .navbar {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(6px);
+        }
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: 1.6px;
+            color: var(--accent-gold) !important;
+            text-transform: uppercase;
+        }
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--accent-gold);
+            box-shadow: 0 0 0 2px rgba(10, 26, 16, 0.85);
+        }
+        .nav-link {
+            color: var(--text-dim) !important;
+            font-weight: 600;
+            position: relative;
+        }
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), transparent);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { color: var(--accent-gold) !important; }
+        .nav-link.active {
+            color: var(--accent-gold) !important;
+            font-weight: 700;
+        }
+        .nav-link.active::after { width: 100%; }
+        .nav-chip {
+            border: 1px solid var(--line);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+        .nav-phone {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .back-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { color: var(--accent-gold); }
+        .nav-bell {
+            position: relative;
+        }
+        .bell-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid var(--line);
+            background: var(--bg-card);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            position: relative;
+            cursor: pointer;
+        }
+        .bell-btn svg {
+            width: 15px;
+            height: 15px;
+            fill: var(--accent-gold);
+        }
+        .bell-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            color: #1a2800;
+            font-size: 9px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-surface);
+        }
+        .bell-badge.is-hidden {
+            display: none;
+        }
+        .bell-popup {
+            position: absolute;
+            top: 44px;
+            right: 0;
+            width: 260px;
+            background: #112A1C;
+            border: 1px solid #2a5a3a;
+            border-radius: 10px;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .bell-popup.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .bell-header {
+            background: #0D2416;
+            border-bottom: 1px solid #1E4D30;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+        }
+        .bell-close {
+            border: none;
+            background: none;
+            color: #4a6e58;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        .bell-row {
+            padding: 9px 14px;
+            border-bottom: 1px solid rgba(26, 61, 38, 0.53);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .bell-row:hover {
+            background: #1a3d28;
+        }
+        .bell-title {
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .bell-date {
+            color: #4a6e58;
+            font-size: 10px;
+        }
+        .bell-footer {
+            background: #0D2416;
+            border-top: 1px solid #1E4D30;
+            padding: 9px 14px;
+            text-align: center;
+        }
+        .bell-footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .page-header {
+            background: var(--bg-hero);
+            padding: 60px 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .header-label {
+            color: var(--accent-gold);
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .header-underline {
+            width: 40px;
+            height: 2px;
+            background: var(--accent-gold);
+            margin-top: 12px;
+        }
+        .header-subtitle {
+            color: var(--text-dim);
+            max-width: 560px;
+        }
+        .trust-pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+        .trust-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            color: var(--text-dim);
+            font-size: 11px;
+            padding: 6px 12px;
+            letter-spacing: 0.3px;
+        }
+        .trust-pill-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            display: inline-block;
+        }
+        .search-bar {
+            margin-top: 28px;
+            max-width: 720px;
+        }
+        .search-input {
+            background-color: var(--bg-input);
+            border: 1.5px solid var(--border-subtle);
+            color: #ffffff;
+            padding: 12px 20px;
+        }
+        .search-input::placeholder { color: #ffffff; opacity: 0.85; }
+        .search-input:focus {
+            background-color: var(--bg-input);
+            border-color: var(--border-subtle);
+            color: #ffffff;
+            box-shadow: none;
+        }
+        .search-btn {
+            background-color: var(--accent-gold);
+            color: var(--accent-ink);
+            font-weight: 700;
+            padding: 0 24px;
+            border: none;
+        }
+
+        .stats-band {
+            background: #112A1C;
+            border-top: 1px solid #1E4D30;
+            border-bottom: 1px solid #1E4D30;
+        }
+        .stats-band .stat-item {
+            padding: 18px 12px;
+            text-align: center;
+            position: relative;
+        }
+        .stats-band .stat-item + .stat-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 1px;
+            background: #1E4D30;
+        }
+        .stat-value {
+            color: var(--accent-gold);
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 11px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .jobs-section {
+            background: var(--bg-page);
+            padding: 40px 0;
+        }
+        .section-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .section-title {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+        .count-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-dim);
+            font-size: 11px;
+            border-radius: 999px;
+            padding: 4px 10px;
+            white-space: nowrap;
+        }
+        .job-card {
+            background: var(--bg-card);
+            border-left: 3px solid var(--accent-gold);
+            border-radius: 0 10px 10px 0;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            box-shadow: 0 12px 28px rgba(7, 16, 10, 0.4);
+            margin-bottom: 18px;
+        }
+        .job-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            color: var(--accent-ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .job-title {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+        .job-meta {
+            color: var(--text-dim);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 0.95rem;
+        }
+        .meta-sep {
+            color: var(--text-dim);
+            opacity: 0.7;
+        }
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .tag-pill {
+            background: var(--bg-hero);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-dim);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+        .job-desc-toggle {
+            margin-top: 12px;
+        }
+        .job-desc-toggle summary {
+            list-style: none;
+            cursor: pointer;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+        .job-desc-toggle summary::-webkit-details-marker {
+            display: none;
+        }
+        .job-desc-toggle summary::before {
+            content: "+";
+            display: inline-block;
+            width: 16px;
+            margin-right: 6px;
+        }
+        .job-desc-toggle[open] summary::before {
+            content: "−";
+        }
+        .job-desc-body {
+            margin-top: 10px;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+        .apply-btn {
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold);
+            background: transparent;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 999px;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .apply-btn:hover {
+            background: var(--accent-gold);
+            color: var(--accent-ink);
+        }
+        .empty-state {
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            padding: 22px 24px;
+            text-align: center;
+            color: var(--text-light);
+            border-radius: 12px;
+        }
+
+        .cta-band {
+            background: #112A1C;
+            border-top: 1px solid #1E4D30;
+            padding: 28px 40px;
+        }
+        .cta-band h3 {
+            margin-bottom: 6px;
+            color: #ffffff;
+            font-size: 1.2rem;
+        }
+        .cta-band p {
+            margin-bottom: 0;
+            color: var(--text-dim);
+        }
+        .cta-button {
+            background: var(--accent-gold);
+            color: #1a2800;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 999px;
+            text-decoration: none;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .footer-strip {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--line);
+            padding: 20px 0;
+            margin-top: auto;
+        }
+        .footer-strip a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+        .footer-text { color: var(--text-dim); }
+
+        @media (max-width: 991px) {
+            .job-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .apply-btn { width: 100%; text-align: center; }
+            .cta-band {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'logo.jpg' %}" alt="{{ company_name }} logo" class="brand-logo"> {{ company_name }}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/jobs">Job Listings</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a class="back-link" href="/"><i class="fa-solid fa-arrow-left me-1"></i> Back to Home</a>
+                    <span class="nav-chip"><i class="fa-solid fa-location-dot text-gold me-2"></i>{{ company_address }}</span>
+                    <div class="d-flex text-light align-items-center">
+                        <i class="fa-solid fa-phone text-gold me-2"></i>
+                        <a class="nav-phone" href="tel:{{ company_phone|cut:' ' }}">{{ company_phone }}</a>
+                    </div>
+                    <div class="nav-bell">
+                        <button class="bell-btn" type="button" aria-label="Notifications">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.8V3a1.5 1.5 0 0 0-3 0v1.2A7 7 0 0 0 5 11v5l-1.5 1.5v.5h17v-.5L19 16Z"/>
+                            </svg>
+                            <span class="bell-badge">{{ recent_jobs|length }}</span>
+                        </button>
+                        <div class="bell-popup" aria-hidden="true">
+                            <div class="bell-header">
+                                <span>RECENT OPENINGS</span>
+                                <button class="bell-close" type="button" aria-label="Close notifications">×</button>
+                            </div>
+                            {% if recent_jobs %}
+                                {% for recent in recent_jobs %}
+                                <a class="bell-row" href="/jobs">
+                                    <span class="bell-title">{{ recent.title }}</span>
+                                    <span class="bell-date">{{ recent.created_at|timesince }} ago</span>
+                                </a>
+                                {% endfor %}
+                            {% else %}
+                                <div class="bell-row" style="cursor: default;">
+                                    <span class="bell-title">No openings yet</span>
+                                    <span class="bell-date">—</span>
+                                </div>
+                            {% endif %}
+                            <div class="bell-footer">
+                                <a href="/jobs">View all openings →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="header-label">Open Positions</div>
+            <h1 class="fw-bold mt-2">Current <span class="text-gold">Job Openings</span></h1>
+            <div class="header-underline"></div>
+            <p class="header-subtitle mt-3">Verified roles with 24h response. Apply directly — no middlemen.</p>
+            <div class="trust-pill-row">
+                <span class="trust-pill"><span class="trust-pill-dot"></span>Verified Employer</span>
+                <span class="trust-pill"><span class="trust-pill-dot"></span>24h Response</span>
+                <span class="trust-pill"><span class="trust-pill-dot"></span>Secure Processing</span>
+                <span class="trust-pill"><span class="trust-pill-dot"></span>Direct Hiring</span>
+            </div>
+            <div class="search-bar">
+                <form method="GET" action="/jobs/" class="d-flex rounded shadow-sm overflow-hidden" style="border: 1.5px solid var(--border-subtle);">
+                    <input type="text" name="search" class="form-control search-input rounded-0 border-0" placeholder="Search by job title, location, or keywords..." value="{{ search_query }}" style="padding-left: 22px; height: 55px;">
+                    <button type="submit" class="search-btn rounded-0 d-flex align-items-center">
+                        <i class="fa-solid fa-magnifying-glass me-2"></i> Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-band">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-4 stat-item">
+                    <div class="stat-value">2,500+</div>
+                    <div class="stat-label">Professionals placed</div>
+                </div>
+                <div class="col-md-4 stat-item">
+                    <div class="stat-value">24h</div>
+                    <div class="stat-label">Average response time</div>
+                </div>
+                <div class="col-md-4 stat-item">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Verified employers</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="jobs-section">
+        <div class="container">
+            <div class="section-row">
+                <div class="section-title">Available Roles</div>
+                <div class="count-badge">{{ jobs|length }} open positions</div>
+            </div>
+            {% if jobs %}
+                {% for job in jobs %}
+                <div class="job-card">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="job-icon"><i class="fa-solid fa-user"></i></div>
+                        <div>
+                            <h4 class="job-title">{{ job.title }}</h4>
+                            <div class="job-meta">
+                                <span><i class="fa-solid fa-indian-rupee-sign me-1"></i> ₹{{ job.salary }}</span>
+                                <span><i class="fa-solid fa-location-dot me-1 text-gold"></i> {{ job.location }}</span>
+                                <span class="meta-sep">&bull;</span>
+                                <span>Full-time</span>
+                            </div>
+                            <div class="tag-row">
+                                {% if "Carpenter" in job.title %}
+                                    <span class="tag-pill">Skilled Trade</span>
+                                    <span class="tag-pill">On-site</span>
+                                    <span class="tag-pill">Immediate Joining</span>
+                                {% elif "Security" in job.title %}
+                                    <span class="tag-pill">Security</span>
+                                    <span class="tag-pill">On-site</span>
+                                    <span class="tag-pill">Immediate Joining</span>
+                                {% else %}
+                                    <span class="tag-pill">Verified Role</span>
+                                    <span class="tag-pill">On-site</span>
+                                    <span class="tag-pill">Immediate Joining</span>
+                                {% endif %}
+                            </div>
+                            <details class="job-desc-toggle">
+                                <summary>View role description</summary>
+                                <div class="job-desc-body">{{ job.description }}</div>
+                            </details>
+                        </div>
+                    </div>
+                    <a href="{% url 'apply_job' job.id %}" class="apply-btn">Apply Now →</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">{{ no_jobs_message }}</div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="cta-band">
+        <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-3">
+            <div>
+                <h3>Don't see a role that fits?</h3>
+                <p>Send us your details and we'll reach out when a matching position opens up.</p>
+            </div>
+            <a href="/#contact" class="cta-button">Send Your Profile</a>
+        </div>
+    </section>
+
+    <footer class="footer-strip">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <a href="/"><i class="fa-solid fa-arrow-left me-2"></i>Back to Home</a>
+            <div class="footer-text">© 2026 Avorre Group. All rights reserved.</div>
+            <span></span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const bell = document.querySelector('.nav-bell');
+        if (bell) {
+            const bellBtn = bell.querySelector('.bell-btn');
+            const bellPopup = bell.querySelector('.bell-popup');
+            const bellBadge = bell.querySelector('.bell-badge');
+            const bellClose = bell.querySelector('.bell-close');
+            const bellKey = 'avorreBellSeen';
+
+            if (sessionStorage.getItem(bellKey) === '1') {
+                bellBadge.classList.add('is-hidden');
+            }
+
+            const openBell = () => {
+                bellPopup.classList.add('open');
+                bellPopup.setAttribute('aria-hidden', 'false');
+                bellBadge.classList.add('is-hidden');
+                sessionStorage.setItem(bellKey, '1');
+            };
+
+            const closeBell = () => {
+                bellPopup.classList.remove('open');
+                bellPopup.setAttribute('aria-hidden', 'true');
+            };
+
+            bellBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (bellPopup.classList.contains('open')) {
+                    closeBell();
+                } else {
+                    openBell();
+                }
+            });
+
+            bellPopup.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+
+            bellClose.addEventListener('click', (event) => {
+                event.stopPropagation();
+                closeBell();
+            });
+
+            document.addEventListener('click', () => {
+                closeBell();
+            });
+        }
+    </script>
+</body>
+</html>
