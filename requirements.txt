@@ -6,4 +6,8 @@ python-decouple>=3.8
 gunicorn>=21.0.0
 whitenoise>=6.5.0
 python-magic-bin>=0.4.14
-
+dotenv
+boto3
+django-storages
+python-dotenv
+psycopg2-binary
