@@ -146,7 +146,7 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # AWS S3 Settings (for media/resumes)
-USE_S3 = os.environ.get('USE_S3') == 'TRUE'
+USE_S3 = os.environ.get('USE_S3', 'TRUE').strip().upper() == 'TRUE'
 if USE_S3:
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
@@ -155,7 +155,15 @@ if USE_S3:
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     
     # Store media files on S3
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+    # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'  # Deprecated in Django 4.2+
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     
     # Optional: If you also want to host static files (CSS/JS) on S3, uncomment below
