@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apply for {{ job.title }} | {{ company_name }}</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'compresskaru_logo_192x192.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'compresskaru_logo_192x192.png' %}">
+    <link rel="shortcut icon" href="{% static 'compresskaru_logo_192x192.png' %}">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -203,6 +206,37 @@
             color: var(--text-dim);
             font-size: 0.85rem;
         }
+        .terms-check {
+            background: rgba(26, 61, 38, 0.45);
+            border: 1px solid rgba(232, 195, 74, 0.25);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .terms-check.form-check {
+            padding-left: 14px;
+            margin-bottom: 0;
+        }
+        .terms-check .form-check-input {
+            margin-top: 0;
+            margin-left: 0;
+            width: 18px;
+            height: 18px;
+        }
+        .terms-check .form-check-label {
+            color: var(--text-light);
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+        .terms-check a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+        .terms-check a:hover {
+            color: var(--accent-ember);
+        }
         .text-muted { color: #D4EDE0 !important; }
         .faq-tip a { color: var(--accent-ember); text-decoration: none; }
         .submit-btn {
@@ -332,6 +366,21 @@
         .trust-pill i { color: var(--accent-gold); margin-right: 6px; }
         
         footer { margin-top: auto; background-color: var(--bg-deep); border-top: 1px solid rgba(232, 195, 74, 0.3); padding: 30px 0; }
+        .policy-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .policy-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .policy-links a:hover {
+            color: var(--accent-gold);
+        }
         .sticky-cta {
             display: none;
             position: fixed;
@@ -477,6 +526,14 @@
                                     </div>
                                     <div class="faq-tip mt-2">The fee helps verify serious applicants and speeds up onboarding.</div>
                                 </div>
+                                <div class="col-12 mt-4">
+                                    <div class="form-check terms-check">
+                                        <input class="form-check-input" type="checkbox" id="termsCheck" name="terms_accepted" required>
+                                        <label class="form-check-label" for="termsCheck">
+                                            I have read and agree to the <a href="{% static 'terms_and_conditions.pdf' %}" target="_blank" rel="noopener">Terms and Conditions</a>
+                                        </label>
+                                    </div>
+                                </div>
                                 <div class="col-12 mt-4 text-end desktop-submit">
                                     <button type="button" id="pay-btn" class="btn btn-gold submit-btn w-100 shadow-sm"><i class="fa-solid fa-qrcode me-2"></i><i class="fa-solid fa-indian-rupee-sign me-1"></i> Pay {{ application_fee }} & Submit Application</button>
                                 </div>
@@ -509,6 +566,10 @@
             <div class="d-flex flex-wrap justify-content-center gap-4 text-light small align-items-center">
                 <div><i class="fa-solid fa-phone text-gold me-2"></i> {{ company_phone }}</div>
                 <div><i class="fa-solid fa-location-dot text-gold me-2"></i> {{ company_address }}</div>
+            </div>
+            <div class="policy-links">
+                <a href="{% static 'refund policy avorre.pdf' %}" target="_blank" rel="noopener">Refund Policy</a>
+                <a href="{% static 'privacy policy avorre.pdf' %}" target="_blank" rel="noopener">Privacy Policy</a>
             </div>
         </div>
     </footer>

@@ -564,6 +564,7 @@ def success(request):
         return redirect('home')
     return render(request, 'success.html', {
         'company_name': settings.COMPANY_NAME,
+        'current_year': settings.CURRENT_YEAR,
         'message': settings.MESSAGE_PAYMENT_SUCCESS,
         'message_desc': settings.MESSAGE_PAYMENT_SUCCESS_DESC,
     })
