@@ -140,6 +140,9 @@ STATIC_URL = 'static/'
 # Directory where Django will look for additional static files
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# Directory where collectstatic will collect static files to
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 # Media files (User-uploaded content like resumes or profile pictures)
 MEDIA_URL = 'media/'
 # The absolute path to the directory where media files will be stored
