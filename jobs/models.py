@@ -25,7 +25,7 @@ class Application(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
-    resume = models.FileField(upload_to='resumes/')
+    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
     experience = models.TextField()
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)

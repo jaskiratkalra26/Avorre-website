@@ -241,7 +241,7 @@ SERVICES = [
 ]
 
 # Hero Section Text
-HERO_TITLE = "Professional Security<br>& Manpower Solutions"
+HERO_TITLE = "Youth Employment Program"
 HERO_SUBTITLE = "Trusted Protection and Reliable Workforce for All Industries"
 HERO_BUTTON_PRIMARY = "Apply for Job"
 HERO_BUTTON_SECONDARY = "Get Quote"

@@ -280,21 +280,19 @@ def verify_payment(request, job_id):
     if len(email) > 254:
         return render(request, 'apply.html', build_apply_context(job, 'Email address is too long.'))
 
-    if not resume:
-        return render(request, 'apply.html', build_apply_context(job, 'Resume is required.'))
+    if resume:
+        resume_ext = os.path.splitext(resume.name)[1].lower()
+        if resume_ext not in ALLOWED_RESUME_EXTENSIONS:
+            return render(request, 'apply.html', build_apply_context(job, 'Resume must be PDF or DOC/DOCX.'))
 
-    resume_ext = os.path.splitext(resume.name)[1].lower()
-    if resume_ext not in ALLOWED_RESUME_EXTENSIONS:
-        return render(request, 'apply.html', build_apply_context(job, 'Resume must be PDF or DOC/DOCX.'))
+        resume_header = resume.read(2048)
+        resume.seek(0)
+        resume_mime = magic.from_buffer(resume_header, mime=True)
+        if resume_mime not in ALLOWED_RESUME_MIME_TYPES:
+            return render(request, 'apply.html', build_apply_context(job, 'Resume must be PDF or DOC/DOCX.'))
 
-    resume_header = resume.read(2048)
-    resume.seek(0)
-    resume_mime = magic.from_buffer(resume_header, mime=True)
-    if resume_mime not in ALLOWED_RESUME_MIME_TYPES:
-        return render(request, 'apply.html', build_apply_context(job, 'Resume must be PDF or DOC/DOCX.'))
-
-    if resume.size > MAX_RESUME_SIZE_BYTES:
-        return render(request, 'apply.html', build_apply_context(job, 'Resume must be 5MB or smaller.'))
+        if resume.size > MAX_RESUME_SIZE_BYTES:
+            return render(request, 'apply.html', build_apply_context(job, 'Resume must be 5MB or smaller.'))
 
     razorpay_payment_id = request.POST.get('razorpay_payment_id')
     razorpay_order_id = request.POST.get('razorpay_order_id')

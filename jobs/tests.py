@@ -56,7 +56,8 @@ class JobPortalViewTests(TestCase):
 		self.assertIn('already applied', response.json().get('error', '').lower())
 		mock_client.assert_not_called()
 
-	def test_verify_payment_requires_resume(self):
+	def test_verify_payment_invalid_resume_type(self):
+		resume = SimpleUploadedFile('resume.exe', b'bad content', content_type='application/octet-stream')
 		response = self.client.post(
 			reverse('verify_payment', args=[self.job.id]),
 			data={
@@ -64,10 +65,11 @@ class JobPortalViewTests(TestCase):
 				'email': 'test@example.com',
 				'phone': '9999999999',
 				'experience': 'Two years',
+				'resume': resume,
 			}
 		)
 		self.assertEqual(response.status_code, 200)
-		self.assertContains(response, 'Resume is required.')
+		self.assertContains(response, 'Resume must be PDF or DOC/DOCX.')
 
 	@override_settings(RAZORPAY_KEY_ID='test_key', RAZORPAY_KEY_SECRET='test_secret')
 	@patch('jobs.views.magic.from_buffer', return_value='application/pdf')

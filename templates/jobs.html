@@ -241,6 +241,55 @@
             color: var(--text-dim);
             max-width: 560px;
         }
+        /* Ambient background lights */
+        .ambient-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+            animation: floatGlow 16s ease-in-out infinite alternate;
+        }
+        .glow-1 {
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, #E8C34A, transparent 70%);
+            top: 5%;
+            left: 2%;
+            animation-duration: 17s;
+        }
+        .glow-2 {
+            width: 620px;
+            height: 620px;
+            background: radial-gradient(circle, #1E4D30, transparent 70%);
+            top: 45%;
+            right: 2%;
+            animation-duration: 21s;
+            animation-delay: -7s;
+        }
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(45px, -35px) scale(1.08); }
+            100% { transform: translate(-35px, 45px) scale(0.94); }
+        }
+
+        /* Staggered entrance animations */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(22px);
+            animation: revealUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        @keyframes revealUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .trust-pill-row {
             display: flex;
             flex-wrap: wrap;
@@ -256,8 +305,17 @@
             border-radius: 20px;
             color: var(--text-dim);
             font-size: 11px;
-            padding: 6px 12px;
+            padding: 6px 14px;
             letter-spacing: 0.3px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: default;
+        }
+        .trust-pill:hover {
+            transform: translateY(-2px);
+            border-color: rgba(232, 195, 74, 0.7);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(232, 195, 74, 0.2);
+            background: #245737;
         }
         .trust-pill-dot {
             width: 7px;
@@ -265,20 +323,37 @@
             border-radius: 50%;
             background: var(--accent-gold);
             display: inline-block;
+            box-shadow: 0 0 0 0 rgba(232, 195, 74, 0.7);
+            animation: dotPulse 2s infinite;
+        }
+        @keyframes dotPulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(232, 195, 74, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(232, 195, 74, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(232, 195, 74, 0); }
         }
         .search-bar {
             margin-top: 28px;
             max-width: 720px;
+        }
+        .search-bar form {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .search-bar form:focus-within {
+            border-color: var(--accent-gold) !important;
+            box-shadow: 0 0 0 3px rgba(232, 195, 74, 0.25), 0 12px 30px rgba(0,0,0,0.45);
+            transform: translateY(-1px);
         }
         .search-input {
             background-color: var(--bg-input);
             border: 1.5px solid var(--border-subtle);
             color: #ffffff;
             padding: 12px 20px;
+            transition: background-color 0.25s ease;
         }
         .search-input::placeholder { color: #ffffff; opacity: 0.85; }
         .search-input:focus {
-            background-color: var(--bg-input);
+            background-color: #204b2f;
             border-color: var(--border-subtle);
             color: #ffffff;
             box-shadow: none;
@@ -287,8 +362,14 @@
             background-color: var(--accent-gold);
             color: var(--accent-ink);
             font-weight: 700;
-            padding: 0 24px;
+            padding: 0 26px;
             border: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .search-btn:hover {
+            background-color: #f3d263;
+            box-shadow: 0 0 16px rgba(232, 195, 74, 0.4);
+            transform: scale(1.02);
         }
 
         .stats-band {
@@ -297,7 +378,7 @@
             border-bottom: 1px solid #1E4D30;
         }
         .stats-band .stat-item {
-            padding: 18px 12px;
+            padding: 20px 12px;
             text-align: center;
             position: relative;
         }
@@ -312,8 +393,13 @@
         }
         .stat-value {
             color: var(--accent-gold);
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
+            display: inline-block;
+            transition: transform 0.25s ease;
+        }
+        .stats-band .stat-item:hover .stat-value {
+            transform: translateY(-2px);
         }
         .stat-label {
             color: var(--text-dim);
@@ -325,6 +411,8 @@
         .jobs-section {
             background: var(--bg-page);
             padding: 40px 0;
+            position: relative;
+            z-index: 1;
         }
         .section-row {
             display: flex;
@@ -351,14 +439,22 @@
         .job-card {
             background: var(--bg-card);
             border-left: 3px solid var(--accent-gold);
-            border-radius: 0 10px 10px 0;
-            padding: 22px 24px;
+            border-radius: 0 12px 12px 0;
+            padding: 24px 26px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 24px;
             box-shadow: 0 12px 28px rgba(7, 16, 10, 0.4);
             margin-bottom: 18px;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-left-width 0.25s ease, background 0.3s ease;
+            position: relative;
+        }
+        .job-card:hover {
+            transform: translateY(-4px);
+            border-left-width: 6px;
+            background: #235938;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.5), 0 0 25px rgba(232, 195, 74, 0.12);
         }
         .job-icon {
             width: 52px;
@@ -371,6 +467,11 @@
             justify-content: center;
             font-size: 1.4rem;
             flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+        .job-card:hover .job-icon {
+            transform: scale(1.08);
+            box-shadow: 0 0 18px rgba(232, 195, 74, 0.45);
         }
         .job-title {
             font-weight: 600;
@@ -399,9 +500,15 @@
             border: 1px solid var(--border-subtle);
             color: var(--text-dim);
             font-size: 10px;
-            padding: 2px 8px;
+            padding: 3px 9px;
             border-radius: 20px;
             letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+        }
+        .tag-pill:hover {
+            background: #2E6645;
+            color: #ffffff;
+            border-color: rgba(232, 195, 74, 0.5);
         }
         .job-desc-toggle {
             margin-top: 12px;
@@ -436,15 +543,20 @@
             color: var(--accent-gold);
             background: transparent;
             font-weight: 700;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 999px;
             white-space: nowrap;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         .apply-btn:hover {
             background: var(--accent-gold);
             color: var(--accent-ink);
+            transform: translateX(3px) scale(1.03);
+            box-shadow: 0 6px 18px rgba(232, 195, 74, 0.35);
         }
         .empty-state {
             background: var(--bg-card);
@@ -521,6 +633,10 @@
     </style>
 </head>
 <body>
+    <!-- Ambient background lights -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
             <a class="navbar-brand" href="/">
@@ -579,16 +695,15 @@
     </nav>
 
     <section class="page-header">
-        <div class="container">
+        <div class="container reveal-up">
             <div class="header-label">Open Positions</div>
             <h1 class="fw-bold mt-2">Current <span class="text-gold">Job Openings</span></h1>
             <div class="header-underline"></div>
-            <p class="header-subtitle mt-3">Verified roles with 24h response. Apply directly — no middlemen.</p>
+            <p class="header-subtitle mt-3">Verified roles with fast-track processing. Apply directly — no middlemen.</p>
             <div class="trust-pill-row">
                 <span class="trust-pill"><span class="trust-pill-dot"></span>Verified Employer</span>
-                <span class="trust-pill"><span class="trust-pill-dot"></span>24h Response</span>
+                <span class="trust-pill"><span class="trust-pill-dot"></span>Fast Shortlisting</span>
                 <span class="trust-pill"><span class="trust-pill-dot"></span>Secure Processing</span>
-                <span class="trust-pill"><span class="trust-pill-dot"></span>Direct Hiring</span>
             </div>
             <div class="search-bar">
                 <form method="GET" action="/jobs/" class="d-flex rounded shadow-sm overflow-hidden" style="border: 1.5px solid var(--border-subtle);">
@@ -602,15 +717,15 @@
     </section>
 
     <section class="stats-band">
-        <div class="container">
+        <div class="container reveal-up delay-1">
             <div class="row text-center">
                 <div class="col-md-4 stat-item">
                     <div class="stat-value">2,500+</div>
                     <div class="stat-label">Professionals placed</div>
                 </div>
                 <div class="col-md-4 stat-item">
-                    <div class="stat-value">24h</div>
-                    <div class="stat-label">Average response time</div>
+                    <div class="stat-value">98%</div>
+                    <div class="stat-label">Placement success rate</div>
                 </div>
                 <div class="col-md-4 stat-item">
                     <div class="stat-value">100%</div>
@@ -621,7 +736,7 @@
     </section>
 
     <section class="jobs-section">
-        <div class="container">
+        <div class="container reveal-up delay-2">
             <div class="section-row">
                 <div class="section-title">Available Roles</div>
                 <div class="count-badge">{{ jobs|length }} open positions</div>
@@ -643,15 +758,12 @@
                                 {% if "Carpenter" in job.title %}
                                     <span class="tag-pill">Skilled Trade</span>
                                     <span class="tag-pill">On-site</span>
-                                    <span class="tag-pill">Immediate Joining</span>
                                 {% elif "Security" in job.title %}
                                     <span class="tag-pill">Security</span>
                                     <span class="tag-pill">On-site</span>
-                                    <span class="tag-pill">Immediate Joining</span>
                                 {% else %}
                                     <span class="tag-pill">Verified Role</span>
                                     <span class="tag-pill">On-site</span>
-                                    <span class="tag-pill">Immediate Joining</span>
                                 {% endif %}
                             </div>
                             <details class="job-desc-toggle">
