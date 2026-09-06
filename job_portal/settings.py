@@ -195,9 +195,9 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # Application configuration (moved from config.py)
 COMPANY_NAME = "AVORRE"
-COMPANY_PHONE = "+91 6006010775"
-COMPANY_PHONE_SHORT = "6006010775"
-COMPANY_ADDRESS = "Shivalkpuram, Sec 8, Roop Nagar, Jammu"
+COMPANY_PHONE = "+91 9541919100"
+COMPANY_PHONE_SHORT = "9541919100"
+COMPANY_ADDRESS = "Roop Nagar, Jammu, Jammu & Kashmir"
 COMPANY_WEBSITE = ""
 CURRENT_YEAR = 2026
 
@@ -224,9 +224,9 @@ MESSAGE_NO_JOBS = "No job openings available at the moment."
 # Service Descriptions
 SERVICES = [
     {
-        "title": "Security Services",
-        "description": "Guards, Supervisors, Bouncers",
-        "icon": "fa-shield-virus"
+        "title": "Facility Management",
+        "description": "Housekeeping, Maintenance",
+        "icon": "fa-building-user"
     },
     {
         "title": "Manpower Supply",
@@ -234,9 +234,9 @@ SERVICES = [
         "icon": "fa-helmet-safety"
     },
     {
-        "title": "Facility Management",
-        "description": "Housekeeping, Maintenance",
-        "icon": "fa-building-user"
+        "title": "Security Services",
+        "description": "Guards, Supervisors, Bouncers",
+        "icon": "fa-shield-virus"
     }
 ]
 

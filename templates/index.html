@@ -729,12 +729,14 @@
             border: 1px solid var(--border-subtle);
             color: var(--text-dim);
             background: var(--bg-hero);
+            text-decoration: none;
             transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
         }
         .about-pill:hover {
             transform: translateY(-2px);
             border-color: var(--accent-gold);
             color: var(--text-light);
+            text-decoration: none;
         }
         .about-pill.gold {
             color: var(--accent-gold);
@@ -744,17 +746,28 @@
         .about-pill.gold:hover {
             background: rgba(232, 195, 74, 0.15);
             border-color: #ffd866;
+            color: var(--accent-gold);
         }
         .coming-soon {
             display: inline-flex;
             align-items: center;
-            border: 1px solid #E8C34A40;
+            border: 1px solid var(--accent-gold);
             color: var(--accent-gold);
             background: #1a1200;
             border-radius: 999px;
-            font-size: 0.75rem;
-            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 4px 12px;
             margin-left: 10px;
+            text-decoration: none;
+            transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 2px 8px rgba(232, 195, 74, 0.15);
+        }
+        .coming-soon:hover {
+            background-color: var(--accent-gold);
+            color: var(--accent-ink);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(232, 195, 74, 0.35);
         }
         .quote-band {
             display: flex;
@@ -928,12 +941,12 @@
                 <div class="col-md-4">
                     <div class="service-card text-center text-md-start h-100 reveal delay-1">
                         <div class="d-flex align-items-center mb-3">
-                            <span class="service-icon me-3"><i class="fa-solid fa-shield-virus"></i></span>
-                            <h5 class="mb-0 text-gold">Security Services</h5>
+                            <span class="service-icon me-3"><i class="fa-solid fa-building-user"></i></span>
+                            <h5 class="mb-0 text-gold">Facility Management</h5>
                         </div>
                         <div class="service-bullets">
-                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Guards, supervisors, bouncers, and event security with on-site leadership.</div>
-                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Threat assessment, access control, emergency response</div>
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Housekeeping, maintenance, and hygiene services with compliance reporting.</div>
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Daily audits and SLA-driven delivery</div>
                         </div>
                     </div>
                 </div>
@@ -952,12 +965,12 @@
                 <div class="col-md-4">
                     <div class="service-card text-center text-md-start h-100 reveal delay-3">
                         <div class="d-flex align-items-center mb-3">
-                            <span class="service-icon me-3"><i class="fa-solid fa-building-user"></i></span>
-                            <h5 class="mb-0 text-gold">Facility Management</h5>
+                            <span class="service-icon me-3"><i class="fa-solid fa-shield-virus"></i></span>
+                            <h5 class="mb-0 text-gold">Security Services</h5>
                         </div>
                         <div class="service-bullets">
-                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Housekeeping, maintenance, and hygiene services with compliance reporting.</div>
-                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Daily audits and SLA-driven delivery</div>
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Guards, supervisors, bouncers, and event security with on-site leadership.</div>
+                            <div class="service-bullet"><i class="fa-solid fa-check"></i>Threat assessment, access control, emergency response</div>
                         </div>
                     </div>
                 </div>
@@ -1044,9 +1057,9 @@
                             <h5 class="text-gold">Workforce Solutions</h5>
                             <p style="color: var(--text-light);">To integrate at least one new sustainable or tech-driven manufacturing or Trading unit in trending businesses like Fmcg, Beverages, Electronic & Electrical items etc.  each year to stay competitive.</p>
                             <div class="d-flex flex-wrap gap-2">
-                                <span class="about-pill">Security Services</span>
-                                <span class="about-pill">Manpower Supply</span>
                                 <span class="about-pill">Facility Mgmt</span>
+                                <span class="about-pill">Manpower Supply</span>
+                                <span class="about-pill">Security Services</span>
                             </div>
                         </div>
                     </div>
@@ -1054,13 +1067,13 @@
                         <div class="pillar-card right">
                             <div class="d-flex align-items-center flex-wrap">
                                 <h5 class="text-gold mb-0">Chai Products</h5>
-                                <span class="coming-soon">Coming Soon</span>
+                                <a href="{% static 'Avorre catalogue. Pdf.pdf' %}" target="_blank" rel="noopener" class="coming-soon" title="View Avorre Tea Catalog">Avorre Tea <i class="fa-solid fa-arrow-up-right-from-square ms-1" style="font-size: 0.7rem;"></i></a>
                             </div>
                             <p class="mt-2" style="color: var(--text-light);">Expanding from trading and manufacturing into a branded entity requires shifting focus from "moving volume" to "owning the customer experience." Success in the FMCG, Beverage, and Electronics sectors depends on balancing high-frequency consumption with high-specification sourcing.</p>
                             <div class="d-flex flex-wrap gap-2">
-                                <span class="about-pill gold">Premium Chai</span>
-                                <span class="about-pill gold">Packaged Tea</span>
-                                <span class="about-pill gold">Bulk Supply</span>
+                                <a href="{% static 'Avorre catalogue. Pdf.pdf' %}" target="_blank" rel="noopener" class="about-pill gold" title="View Avorre Tea Catalog">Premium Chai</a>
+                                <a href="{% static 'Avorre catalogue. Pdf.pdf' %}" target="_blank" rel="noopener" class="about-pill gold" title="View Avorre Tea Catalog">Packaged Tea</a>
+                                <a href="{% static 'Avorre catalogue. Pdf.pdf' %}" target="_blank" rel="noopener" class="about-pill gold" title="View Avorre Tea Catalog">Bulk Supply</a>
                             </div>
                         </div>
                     </div>
